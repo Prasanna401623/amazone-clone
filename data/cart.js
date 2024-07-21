@@ -1,16 +1,22 @@
 // Using localStorage.getItem(), the items saved in 'cart' is accessed. Since, the data that was stored was string before, JSON.parse() was used to make it array again. When there is no product saved in the cart, a default value is given.
-export let cart = JSON.parse(localStorage.getItem('cart')) || [{
-    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    quantity: 2,
-    deliveryOptionId: '1'
-  },
-  {
-    productId:"15b6fc6f-327a-4ec4-896f-486349e85a3d",
-    quantity: 1,
-    deliveryOptionId: '2'
-  }];
+export let cart;
 
-  function saveToStorage(){
+loadFromStorage();
+
+  export function loadFromStorage(){
+    cart = JSON.parse(localStorage.getItem('cart')) || [{
+      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      quantity: 2,
+      deliveryOptionId: '1'
+    },
+    {
+      productId:"15b6fc6f-327a-4ec4-896f-486349e85a3d",
+      quantity: 1,
+      deliveryOptionId: '2'
+    }];
+  }
+
+ function saveToStorage(){
     // localStorage helps us to save the data. The data remains in the webpage even after refresh. The data of cart is saved in 'cart' variable. Since, localStorage only accepts strings, JSON.stringify is used to make the cart array string. 
     localStorage.setItem('cart', JSON.stringify(cart));
   };

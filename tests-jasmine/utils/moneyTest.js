@@ -1,4 +1,4 @@
-import formatCurrency from '../scripts/utils/money.js';
+import formatCurrency from '../../scripts/utils/money.js';
 
 // describe function is provided by jasmine and it creates test suite
 describe('test suite: formatCurrency', () => {
