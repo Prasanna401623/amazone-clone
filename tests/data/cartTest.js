@@ -46,6 +46,8 @@ describe('test suite: addToCart', () => {
       writable: true
     });
 
+    // spyOn is used to create a fake version of localStorage.setItem so the testing code doesn't interfere with main program. 
+    spyOn(localStorage, 'setItem');
 
   });
 
@@ -61,9 +63,6 @@ describe('test suite: addToCart', () => {
 
   // it function is used to create test single section. It takes two parameters. The first parameter is the name of test you want to do (string) and the second parameter is function that contains the test code you want to use. 
   it('adds a new product in the cart', () => {
-
-    // spyOn is used to create a fake version of localStorage.setItem so the testing code doesn't interfere with main program. 
-    spyOn(localStorage, 'setItem');
 
     // spyOn helps us to create a  fake version of localStorage.getItem. And that fake version returns an empty.
     spyOn(localStorage, 'getItem').and.callFake(() => {
@@ -95,12 +94,16 @@ describe('test suite: addToCart', () => {
 
     // check if the first product's quantity equals 1.
     expect(cart[0].quantity).toEqual(1);
+
+    // checks if localStorage.setItem received the correct values. 
+    expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify([{
+      productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 1,
+      deliveryOptionId:'1'
+    }]));
   });
 
   it('adds an existing product in the cart', () => {
-
-    // spyOn is used to create a fake version of localStorage.setItem so the testing code doesn't interfere with main program. 
-    spyOn(localStorage, 'setItem');
 
     // spyOn helps us to create a  fake version of localStorage.getItem. And that fake version returns an empty 
     spyOn(localStorage, 'getItem').and.callFake(() => {
@@ -136,5 +139,12 @@ describe('test suite: addToCart', () => {
 
     // check if the first product's quantity equals 2.
     expect(cart[0].quantity).toEqual(2);
-  });
+
+    // checks if localStorage.setItem received the correct values. 
+    expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify([{
+      productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 2,
+      deliveryOptionId:'1'
+    }]));
+  })
 });

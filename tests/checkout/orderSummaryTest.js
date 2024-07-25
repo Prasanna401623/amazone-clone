@@ -81,6 +81,9 @@ describe('test suite: renderOrderSummary', () => {
       value: originalLocalStorage,
       writable: true
     });
+
+    // to clean up the HTML that is generated on the page.
+    document.querySelector('.js-test-container').innerHTML = ``;
   });
 
   // it funtion is used to test if the product displayed are correct. It takes two parameters: the first parameter is the name of the test (string) and the second parameter is the function where you write test code.
@@ -101,8 +104,23 @@ describe('test suite: renderOrderSummary', () => {
       document.querySelector(`.js-product-quantity-${productId2}`).innerText
     ).toContain('Quantity: 1');
 
-    // to clean up the HTML that is generated on the page.
-    document.querySelector('.js-test-container').innerHTML = ``;
+    // checks if the name of the product is correct. 
+    expect(
+      document.querySelector(`.js-product-name-${productId1}`).innerText
+    ).toEqual('Black and Gray Athletic Cotton Socks - 6 Pairs');
+
+    expect(
+      document.querySelector(`.js-product-name-${productId2}`).innerText
+    ).toEqual('Intermediate Size Basketball');
+
+    // checks if the product price are displayed correctly. 
+    expect(
+      document.querySelector(`.js-product-price-${productId1}`).innerText
+    ).toEqual('$10.90');
+
+    expect(
+      document.querySelector(`.js-product-price-${productId2}`).innerText
+    ).toEqual('$20.95');
   });
 
   // it function is used to check if the products are removed correctly. 
@@ -130,7 +148,14 @@ describe('test suite: renderOrderSummary', () => {
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
 
-    // to clean up the HTML that is generated on the page.
-    document.querySelector('.js-test-container').innerHTML = ``;
+    // checks if the name of the second product is correct. 
+    expect(
+      document.querySelector(`.js-product-name-${productId2}`).innerText
+    ).toEqual('Intermediate Size Basketball');
+
+    // checks if the product price are displayed correctly. 
+    expect(
+      document.querySelector(`.js-product-price-${productId2}`).innerText
+    ).toEqual('$20.95');
   });
 });
