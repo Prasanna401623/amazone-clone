@@ -4,15 +4,13 @@
 // This is the code I could write and work and I also used chatgpt to clear some things. For this test, I will have to come back again. 
 
 
-import { addToCart, loadFromStorage, cart } from "../../data/cart.js";
+import { addToCart, loadFromStorage, cart, removeFromCart } from "../../data/cart.js";
 
 
 // describe function is provided by jasmine. It used to test suite i.e, group of tests. It takes two parameters. The first parameter is the name of test suite (string), and second parameter is the function (the test you want to do).
 describe('test suite: addToCart', () => {
 
-  
   let originalLocalStorage;
-
 
   // beforeEach function is used to create codes that is applied before each test. This is done so that there is no leakage of test code that could affect main project. 
   beforeEach(() => {
@@ -147,4 +145,100 @@ describe('test suite: addToCart', () => {
       deliveryOptionId:'1'
     }]));
   })
+});
+
+// describe function is used to test suite: removeFromCart. It checks if the removeFromCart() function works properly or not. 
+describe('test suite: removeFromCart', () => {
+
+  const productId1 = "e43638ce-6aa0-4b85-b27f-e1d07eb678c6";
+
+  const productId2 = "15b6fc6f-327a-4ec4-896f-486349e85a3d"; 
+
+  let originalLocalStorage;
+
+  // beforeEach function is used to create codes that is applied before each test. This is done so that there is no leakage of test code that could affect main project. 
+  beforeEach(() => {
+
+    // Backup the original localStorage. This code creates a backup of the current state of localStorage. It copies all of 'localStorage' properties into new object called originalLocalStorage. This is done so we can restore the original state later.
+    originalLocalStorage = { ...localStorage };
+
+    // mockLocalStorage is assigned to a function.
+    const mockLocalStorage = (function() {
+
+      // store is assigned to empty object. It is used to simulate the 'localStorage' interface.
+      let store = {};
+
+      // the function returns the object that mimic the functionality of 'localStorage'. The object has getItem and setItem. Key is used to save and retrive the data. 
+      return {
+        getItem: function(key) {
+          return store[key] || null;
+        },
+        setItem: function(key, value) {
+          store[key] = value.toString();
+        },
+        clear: function() {
+          store = {};
+        }
+      };
+    })();
+
+    // Replace the global localStorage with the mock
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true
+    });
+
+    // spyOn is used to create a fake version of localStorage.setItem so the testing code doesn't interfere with main program. 
+    spyOn(localStorage, 'setItem');
+    
+    // spyOn is used to create a fake version of localStorage.getItem. And it returns two products.
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return JSON.stringify([{
+        productId: productId1,
+        quantity: 2,
+        deliveryOptionId:'1'
+
+      },{
+
+        productId: productId2,
+        quantity: 1,
+        deliveryOptionId: '1'
+
+      }]);
+    });
+
+    // loadFromStorage() is called which contains cart variable. That means the cart variable will contain the two products. 
+    loadFromStorage();
+
+  });
+
+  // afterEach function is used to write to code that can be applied after each test. In this case, after each test the original localStorage is restored. 
+  afterEach(() => {
+    
+    // Restore the original localStorage
+    Object.defineProperty(window, 'localStorage', {
+      value: originalLocalStorage,
+      writable: true
+    });
+  });
+
+  // it function is used to check if the product in the cart is removed or not. 
+  it('remove a productId that is in the cart', () => {
+
+    // removes the first product from the cart 
+    removeFromCart(productId1);
+
+    // checks if the length of new cart is 1
+    expect(cart.length).toEqual(1);
+  });
+
+  // it function is used to check if the product (not in the cart) is removed nothing changes. 
+  it('remove a productId that is not in the cart', () => {
+
+    // removes a product that is not in the cart.
+    removeFromCart('id1');
+
+    // checks if the length of new cart is 2 i.e, no changes
+    expect(cart.length).toEqual(2);
+  });
 });
