@@ -128,6 +128,11 @@ export function updateDeliveryOption(productId, deliveryOptionId){
     }
   });
 
+  // if the productId does not match, return nothing
+  if(!matchingItem){
+    return;
+  }
+
   // updating the matchingItem.deliveryOptionId to the deliveryOptionId. deliveryOptionId is the id of the delivery option that is selected.
   matchingItem.deliveryOptionId = deliveryOptionId;
 
