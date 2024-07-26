@@ -158,4 +158,35 @@ describe('test suite: renderOrderSummary', () => {
       document.querySelector(`.js-product-price-${productId2}`).innerText
     ).toEqual('$20.95');
   });
+
+  // it function is used to create test for updating the delivery option
+  it('updates the delivery option', () => {
+
+    // using querySelector, js-delivery-option-productid1-3 is selected and clicked. This will choose the third option of delivery for the first product.
+    document.querySelector(`.js-delivery-option-${productId1}-3`).click();
+
+    // checks if the third delivery option is chosen (i.e, checked)
+    expect(
+      document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked
+    ).toEqual(true);
+
+    // checks if the length of cart is 2
+    expect(cart.length).toEqual(2);
+
+    // checks if the first product's delivery option id is 3
+    expect(cart[0].deliveryOptionId).toEqual('3');
+
+    // checks if the id of first product of cart matches with productId1. 
+    expect(cart[0].productId).toEqual(productId1);
+
+    // checks if the shipping price equals to $14.98
+    expect(
+      document.querySelector(`.js-payment-summary-money-shipping`).innerText
+    ).toEqual('$14.98');
+
+    // checks if the total price equals to $63.50
+    expect(
+      document.querySelector(`.js-payment-summary-money-total`).innerText
+    ).toEqual('$63.50');
+  });
 });
