@@ -16,7 +16,7 @@ export function getProduct(productId){
 // Product class been created
 class Product {
 
-  // methods has been declared.
+  // properties has been declared.
   id;
   image;
   name;
@@ -40,6 +40,32 @@ class Product {
   // getPrice() is used to return the price of products in format
   getPrice(){
     return `$${formatCurrency(this.priceCents)}`;
+  }
+
+  // this is used for polymorphism. 
+  extraInfoHTML(){
+    return '';
+  }
+}
+
+// inherting properties and methods from Product class
+class Clothing extends Product {
+  sizeChartLink;
+
+  constructor(productDetails){
+
+    //super() calls constructor of parent class
+    super(productDetails);
+
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraInfoHTML(){
+    return `
+      <a href = "${this.sizeChartLink}" target = "_blank">
+        Size chart
+      </a>
+    `;
   }
 }
 
@@ -731,6 +757,11 @@ export const products = [
     ]
   }
 ].map((productDetails) => {
+  
+  // a property called type is within productDetails(objects). We can use the discriminator property to understand which class should be used. So using if the productDetails.type equals "clothing", convert the object in Clothing class. 
+  if (productDetails.type === "clothing"){
+    return new Clothing(productDetails);
+  }
 
   // the parameter productDetails represent each products' details of array (object)
   // new Product(productDetails) creates a new class that contains all details of each product. So, at the end it returns array filled with all classes. This way we convert objects into classes. It is done because classes are more enhanced than objects.
