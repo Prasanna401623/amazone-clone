@@ -1,3 +1,5 @@
+import {formatCurrency} from '../scripts/utils/money.js';
+
 // the function helps us to get the product (object) that has been kept in cart. It loops through products (array). If the product id of product (object) of products (array) matches with the product id of the product that has kept in the cart, the matchingProduct is assigned to product. At the end, it returns matchingProduct.
 export function getProduct(productId){
   let matchingProduct;
@@ -11,8 +13,37 @@ export function getProduct(productId){
   return matchingProduct;
 }
 
+// Product class been created
+class Product {
 
+  // methods has been declared.
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
 
+  // constructor has been used to create setup codes.
+  constructor(productDetails){
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  // getters is used to create stars for each product. this is used to represent the products' details that are going to be used. It returns the image of stars.
+  getStarsUrl(){
+    return `images/ratings/rating-${this.rating.stars*10}.png`;
+  }
+
+  // getPrice() is used to return the price of products in format
+  getPrice(){
+    return `$${formatCurrency(this.priceCents)}`;
+  }
+}
+
+// converting objects into classes. The array products has been looped through using .map(). .map() helps you loop through array and for each item, it runs a function. At the end .map() returns you new array with all objects.
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -699,4 +730,9 @@ export const products = [
       "umbrella"
     ]
   }
-];
+].map((productDetails) => {
+
+  // the parameter productDetails represent each products' details of array (object)
+  // new Product(productDetails) creates a new class that contains all details of each product. So, at the end it returns array filled with all classes. This way we convert objects into classes. It is done because classes are more enhanced than objects.
+  return new Product(productDetails);
+});
