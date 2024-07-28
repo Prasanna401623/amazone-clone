@@ -69,6 +69,40 @@ class Clothing extends Product {
   }
 }
 
+// Appliance class is created (which inherits properties and methods from parent class Product)
+class Appliance extends Product{
+
+  // additional properties is declared.
+  instructionsLink;
+  warrantyLink;
+
+  // constructor is created.
+  constructor(productDetails){
+    
+    // inherits the constructor of Product (parent class)
+    super(productDetails);
+
+    this.instructionsLink = productDetails.instructionsLink;
+
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+
+  // method extraInfoHTML is created which returns the HTML of two links: instructions and warranty
+  extraInfoHTML(){
+    return `
+      <a href = "${this.instructionsLink}" target = "_blank">
+        Instructions
+      </a>
+
+      <a href = "${this.warrantyLink}" target = "_blank">
+        Warranty
+      </a>
+    `;
+  }
+
+
+}
+
 // converting objects into classes. The array products has been looped through using .map(). .map() helps you loop through array and for each item, it runs a function. At the end .map() returns you new array with all objects.
 export const products = [
   {
@@ -130,7 +164,10 @@ export const products = [
       "toaster",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png"
   },
   {
     id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -315,7 +352,10 @@ export const products = [
       "water boiler",
       "appliances",
       "kitchen"
-    ]
+    ],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png"
   },
   {
     id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -620,7 +660,10 @@ export const products = [
       "coffeemakers",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png"
   },
   {
     id: "02e3a47e-dd68-467e-9f71-8bf6f723fdae",
@@ -680,7 +723,10 @@ export const products = [
       "food blenders",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png"
   },
   {
     id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
@@ -758,9 +804,14 @@ export const products = [
   }
 ].map((productDetails) => {
   
-  // a property called type is within productDetails(objects). We can use the discriminator property to understand which class should be used. So using if the productDetails.type equals "clothing", convert the object in Clothing class. 
+  // a property called type is within productDetails(objects). We can use the discriminator property to understand which class should be used. So using if-statement, if the productDetails.type equals "clothing", convert the object in Clothing class. 
   if (productDetails.type === "clothing"){
     return new Clothing(productDetails);
+  }
+
+  // if productDetails.type equals appliance, it creates a new class Appliance with all product detials. Compared to parent class, this has two extra links. 
+  if (productDetails.type === "appliance"){
+    return new Appliance(productDetails);
   }
 
   // the parameter productDetails represent each products' details of array (object)
