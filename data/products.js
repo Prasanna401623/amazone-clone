@@ -14,7 +14,7 @@ export function getProduct(productId){
 }
 
 // Product class been created
-class Product {
+export class Product {
 
   // properties has been declared.
   id;
@@ -49,7 +49,7 @@ class Product {
 }
 
 // inherting properties and methods from Product class
-class Clothing extends Product {
+export class Clothing extends Product {
   sizeChartLink;
 
   constructor(productDetails){
@@ -70,7 +70,7 @@ class Clothing extends Product {
 }
 
 // Appliance class is created (which inherits properties and methods from parent class Product)
-class Appliance extends Product{
+export class Appliance extends Product{
 
   // additional properties is declared.
   instructionsLink;
