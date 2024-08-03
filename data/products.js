@@ -103,6 +103,41 @@ export class Appliance extends Product{
 
 }
 
+export let products = [];
+
+export function loadProducts(fun){
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+  
+      // a property called type is within productDetails(objects). We can use the discriminator property to understand which class should be used. So using if-statement, if the productDetails.type equals "clothing", convert the object in Clothing class. 
+      if (productDetails.type === "clothing"){
+        return new Clothing(productDetails);
+      }
+    
+      // if productDetails.type equals appliance, it creates a new class Appliance with all product detials. Compared to parent class, this has two extra links. 
+      if (productDetails.type === "appliance"){
+        return new Appliance(productDetails);
+      }
+    
+      // the parameter productDetails represent each products' details of array (object)
+      // new Product(productDetails) creates a new class that contains all details of each product. So, at the end it returns array filled with all classes. This way we convert objects into classes. It is done because classes are more enhanced than objects.
+      return new Product(productDetails);
+    });
+
+    console.log('load products');
+
+    fun();
+  });
+  
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+
+  xhr.send();
+}
+
+/*
+
 // converting objects into classes. The array products has been looped through using .map(). .map() helps you loop through array and for each item, it runs a function. At the end .map() returns you new array with all objects.
 export const products = [
   {
@@ -818,3 +853,5 @@ export const products = [
   // new Product(productDetails) creates a new class that contains all details of each product. So, at the end it returns array filled with all classes. This way we convert objects into classes. It is done because classes are more enhanced than objects.
   return new Product(productDetails);
 });
+
+*/
