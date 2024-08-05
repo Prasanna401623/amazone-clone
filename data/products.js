@@ -105,9 +105,40 @@ export class Appliance extends Product{
 
 export let products = [];
 
+export function loadProductsFetch(){
+
+  // fetch() is a built-in function that makes the HTTP request. By default, it makes the GET request. 
+  const promise = fetch('https://supersimplebackend.dev/products').then((response) => {
+    
+    // response.json() gives us json or data attached to the response. It returns a promise.
+    return response.json();
+  }).then((productsData) => {
+    products = productsData.map((productDetails) => {
+  
+      // a property called type is within productDetails(objects). We can use the discriminator property to understand which class should be used. So using if-statement, if the productDetails.type equals "clothing", convert the object in Clothing class. 
+      if (productDetails.type === "clothing"){
+        return new Clothing(productDetails);
+      }
+    
+      // if productDetails.type equals appliance, it creates a new class Appliance with all product detials. Compared to parent class, this has two extra links. 
+      if (productDetails.type === "appliance"){
+        return new Appliance(productDetails);
+      }
+    
+      // the parameter productDetails represent each products' details of array (object)
+      // new Product(productDetails) creates a new class that contains all details of each product. So, at the end it returns array filled with all classes. This way we convert objects into classes. It is done because classes are more enhanced than objects.
+      return new Product(productDetails);
+    });
+
+    console.log('load products');
+  });
+  return promise;
+}
+
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
 
+  // using callback to get response. Event listener is added so that the asynrchous code runs withoout problem.  
   xhr.addEventListener('load', () => {
     products = JSON.parse(xhr.response).map((productDetails) => {
   

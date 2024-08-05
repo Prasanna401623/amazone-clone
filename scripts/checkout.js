@@ -1,16 +1,18 @@
 import {renderOrderSummary} from './checkout/orderSummary.js';
 import {renderPaymentSummary} from './checkout/paymentSummary.js';
-import { loadProducts } from '../data/products.js';
+import { loadProducts, loadProductsFetch } from '../data/products.js';
 // import '../data/cart-class.js';
 //import '../data/backend-practice.js';
 
 // Promise is a class. When we creat promise,we need to give it a function. It runs the inner function immediately. That means loadProducts runs immediately. resolve is similar to done(). Once the resolve is used, the next step will run. To run the next step, we will use then(). then() takes a function as a parameter. 
-new Promise((resolve) => {
-  loadProducts(() => {
-    resolve();
-  });
-  
-}).then(() => {
+Promise.all([
+  loadProductsFetch(),
+  new Promise((resolve) => {
+    loadProducts(() => {
+      resolve();
+    });
+  })
+]).then(() => {
   renderOrderSummary();
   renderPaymentSummary();
 })

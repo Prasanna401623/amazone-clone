@@ -1,6 +1,6 @@
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { loadFromStorage, cart } from "../../data/cart.js";
-import { loadProducts } from "../../data/products.js";
+import { loadProducts, loadProductsFetch } from "../../data/products.js";
 
 // describe function helps us test suite i.e, group of codes. It takes two parameter: the first parameter is the name of the test (string) and the second parameter is function. The function is where you write test codes.
 describe('test suite: renderOrderSummary', () => {
@@ -13,7 +13,7 @@ describe('test suite: renderOrderSummary', () => {
 
   // before all runs the code before all of the test. done is a function given by Jasmine. done is used to let some code finish before going to next line i.e, it will wait till the code completes and only go to next line when done() is called. In this case, we are making sure the products are loading first and then the other lines work using done. 
   beforeAll((done) => {
-    loadProducts(() => {
+    loadProductsFetch().then(() =>{
       done();
     });
   });
