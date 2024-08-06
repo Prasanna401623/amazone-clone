@@ -5,16 +5,26 @@ import { loadCart } from '../data/cart.js';
 // import '../data/cart-class.js';
 //import '../data/backend-practice.js';
 
-// async makes a function return a promise. await is used to let us wait for promise to finish. 
+// async makes a function return a promise. await is used to let us wait for promise to finish. try and catch is used to handle errors. 
 async function loadPage(){
 
-  await loadProductsFetch();
+  try{
 
-  await new Promise((resolve) => {
-    loadCart(() => {
-      resolve();
+    //throw 'error1';
+
+    await loadProductsFetch();
+
+    await new Promise((resolve, reject) => {
+      //throw 'error2'
+      loadCart(() => {
+        //reject('error3');
+        resolve();
+      });
     });
-  })
+  }
+  catch(error){
+    console.log('Unexpected error. Please try again later');
+  }
 
   renderOrderSummary();
   renderPaymentSummary();

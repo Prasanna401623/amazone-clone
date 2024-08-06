@@ -131,7 +131,10 @@ export function loadProductsFetch(){
     });
 
     console.log('load products');
-  });
+  }).catch((error) => {
+    console.log('Unexpected error. Please try again later');
+  })
+  
   return promise;
 }
 
@@ -160,6 +163,11 @@ export function loadProducts(fun){
     console.log('load products');
 
     fun();
+  });
+
+  // this is error handling. If we get an error, we can handle the error with the help of inner function. The inner function can use another parameter called error which has information about the error.
+  xhr.addEventListener('error', (error) => {
+    console.log('Unexpected error. Please try again later');
   });
   
   xhr.open('GET', 'https://supersimplebackend.dev/products');
