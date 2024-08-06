@@ -2,6 +2,7 @@ import {cart, updateCartQuantity} from '../../data/cart.js';
 import {getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
+import {addOrder} from '../../data/orders.js';
 
 // renders the payment section of checkout page.
 export function renderPaymentSummary(){
@@ -83,7 +84,7 @@ export function renderPaymentSummary(){
       </div>
     </div>
 
-    <button class="place-order-button button-primary">
+    <button class="js-place-order place-order-button button-primary">
       Place your order
     </button>
     </div>
@@ -92,4 +93,29 @@ export function renderPaymentSummary(){
   // using querySelctor, payment-summary is chosen. Using innerHTML, new HTML is generated i.e, paymentSummaryHTML.
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 
+  document.querySelector('.js-place-order')
+    .addEventListener('click', async () => {
+
+      try{
+
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cart: cart
+          })
+        });
+  
+        const order = await response.json();
+        addOrder(order);
+
+      } catch(error){
+        console.log('Unexpected error. Try again later.')
+      }
+
+      // window.location is a special object provided by java script that controls the url.
+      window.location.href = 'orders.html'
+    });
 }
